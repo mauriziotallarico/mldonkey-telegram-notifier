@@ -6,3 +6,8 @@ https://community.onion.io/topic/499/sending-telegram-messages-via-bots
 
 Tale guida elenca anche uno script per fare pipe di un qualsiasi testo verso un BOT
 [Telegram](https://telegram.org/).
+
+Per usare correttamente lo script bisogna settare la locazione dello script stesso in 
+"[downloads.ini](http://mldonkey.sourceforge.net/Downloads.ini)" (file di configurazione di mldonkey)
+
+<b>file_completed_cmd = "$path_to/my_file_completed_cmd.sh"</b>
