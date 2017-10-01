@@ -14,4 +14,4 @@ Per usare correttamente lo script bisogna settare la locazione dello script stes
 
 Ho aggiunto anche la possibilità di scaricare automaticamente i sotto titoli (ITA) da OpenSubTitles in caso il file scaricato sia un 
 telefilm in lingua originale.
-Mi sono servito di questo script Python "[OpenSubtitlesDownload](https://github.com/emericg/OpenSubtitlesDownload)".
+Mi sono servito di questo script Python [OpenSubtitlesDownload](https://github.com/emericg/OpenSubtitlesDownload).
