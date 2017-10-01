@@ -12,6 +12,6 @@ Per usare correttamente lo script bisogna settare la locazione dello script stes
 
 <b>file_completed_cmd = "$path_to/my_file_completed_cmd.sh"</b>
 
-Ho aggiunto anche la possibilità di scaricare automaticamente i sotto titoli (ITA) da OpenSubTitles in caso il file scaricato sia un 
+Ho aggiunto anche la possibilità di scaricare automaticamente i sottotitoli (ITA) da OpenSubTitles in caso il file scaricato sia un 
 telefilm in lingua originale.
 Mi sono servito di questo script Python [OpenSubtitlesDownload](https://github.com/emericg/OpenSubtitlesDownload).
