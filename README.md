@@ -1,4 +1,10 @@
 # mldonkey-telegram-notifier
+
+
+
+
+Italiano:
+
 Una serie di script per usare la feature di [mldonkey]( http://mldonkey.sourceforge.net/Main_Page) chiamata "file_completed_cmd" ed inviare una notifica tramite un BOT telegram all'avvenuto completamento del download di un file.
 
 Per il BOT [Telegram](https://telegram.org/) mi sono basato sulla seguente guida:
@@ -16,6 +22,9 @@ Ho aggiunto anche la possibilità di scaricare automaticamente i sottotitoli (IT
 telefilm in lingua originale.
 Mi sono servito di questo script Python [OpenSubtitlesDownload](https://github.com/emericg/OpenSubtitlesDownload).
 
+
+
+English:
 
 A series of scripts to use the [mldonkey] feature (http://mldonkey.sourceforge.net/Main_Page) called "file_completed_cmd" and send a notification via a BOT telegram when a file has been downloaded.
 
