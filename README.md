@@ -28,17 +28,17 @@ English:
 
 A series of scripts to use the [mldonkey](http://mldonkey.sourceforge.net/Main_Page) feature called "file_completed_cmd" and send a notification via a BOT telegram when a file has been downloaded.
 
-For the  [Telegram] (https://telegram.org/)BOT I have based on the following guide:
+For the  [Telegram](https://telegram.org/) BOT I have based on the following guide:
 https://community.onion.io/topic/499/sending-telegram-messages-via-bots
 
-This guide also lists a [script] (https://github.com/mauriziotallarico/mldonkey-telegram-notifier/blob/master/telegram-pipe.sh) to pipe any text to a 
-[Telegram] (https://telegram.org/) BOT.
+This guide also lists a [script](https://github.com/mauriziotallarico/mldonkey-telegram-notifier/blob/master/telegram-pipe.sh) to pipe any text to a 
+[Telegram](https://telegram.org/) BOT.
 
 To use the script correctly, set the location of the script in
 "[downloads.ini] (http://mldonkey.sourceforge.net/Downloads.ini)" (mldonkey configuration file)
 
-<b> file_completed_cmd = "$ path_to / my_file_completed_cmd.sh" </ b>
+<b>file_completed_cmd = "$ path_to / my_file_completed_cmd.sh"</ b>
 
 I have also added the ability to automatically download subtitles (ITA) from OpenSubTitles in case the downloaded file is a
 telefilm in the original language.
-I used this Python script [OpenSubtitlesDownload] (https://github.com/emericg/OpenSubtitlesDownload).
+I used this Python script [OpenSubtitlesDownload](https://github.com/emericg/OpenSubtitlesDownload).
