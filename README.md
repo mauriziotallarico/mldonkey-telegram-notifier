@@ -35,7 +35,7 @@ This guide also lists a [script](https://github.com/mauriziotallarico/mldonkey-t
 [Telegram](https://telegram.org/) BOT.
 
 To use the script correctly, set the location of the script in
-"[downloads.ini] (http://mldonkey.sourceforge.net/Downloads.ini)" (mldonkey configuration file)
+"[downloads.ini](http://mldonkey.sourceforge.net/Downloads.ini)" (mldonkey configuration file)
 
 <b>file_completed_cmd = "$ path_to / my_file_completed_cmd.sh"</ b>
 
