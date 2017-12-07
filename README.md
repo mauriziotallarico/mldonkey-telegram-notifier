@@ -26,13 +26,13 @@ Mi sono servito di questo script Python [OpenSubtitlesDownload](https://github.c
 
 English:
 
-A series of scripts to use the [mldonkey] feature (http://mldonkey.sourceforge.net/Main_Page) called "file_completed_cmd" and send a notification via a BOT telegram when a file has been downloaded.
+A series of scripts to use the [mldonkey](http://mldonkey.sourceforge.net/Main_Page) feature called "file_completed_cmd" and send a notification via a BOT telegram when a file has been downloaded.
 
-For the BOT [Telegram] (https://telegram.org/) I have based on the following guide:
+For the  [Telegram] (https://telegram.org/)BOT I have based on the following guide:
 https://community.onion.io/topic/499/sending-telegram-messages-via-bots
 
-This guide also lists a [script] (https://github.com/mauriziotallarico/mldonkey-telegram-notifier/blob/master/telegram-pipe.sh) to pipe any text to a BOT
-[Telegram] (https://telegram.org/).
+This guide also lists a [script] (https://github.com/mauriziotallarico/mldonkey-telegram-notifier/blob/master/telegram-pipe.sh) to pipe any text to a 
+[Telegram] (https://telegram.org/) BOT.
 
 To use the script correctly, set the location of the script in
 "[downloads.ini] (http://mldonkey.sourceforge.net/Downloads.ini)" (mldonkey configuration file)
