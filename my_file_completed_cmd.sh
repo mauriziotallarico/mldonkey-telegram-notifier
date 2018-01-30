@@ -13,7 +13,7 @@ FILENAME_SUB_ITA_CORRECT="${FILENAME_NO_EXT}.srt"
 
 
 # First trial, call googliser
-/home/pi/googliser/googliser.sh -n 1 -p "$FILENAME_NO_EXT" -g -q
+# /home/pi/googliser/googliser.sh -n 1 -p "$FILENAME_NO_EXT" -g -q
 python /home/pi/OpenSubtitlesDownload/OpenSubtitlesDownload.py -l ita "$FILENAME"
 
 
