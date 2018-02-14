@@ -3,10 +3,8 @@
 #  This script sends whatever is piped to it as a message to the specified Telegram bot
 #
 message=$( cat )
-apiToken=372542574:AAGYGWv1OysKb8n3NPqcypxOCeaBdVThywE
 # example:
 # apiToken=123456789:AbCdEfgijk1LmPQRSTu234v5Wx-yZA67BCD
-userChatId=130892202
 # example:
 # userChatId=123456789
 
@@ -18,7 +16,8 @@ sendTelegram() {
         -d chat_id=$userChatId
 }
 
-if  [[ -z "$message" ]]; then
+if  [ -z "$message" ] 
+then
         echo "Please pipe a message to me!"
 else
         sendTelegram
