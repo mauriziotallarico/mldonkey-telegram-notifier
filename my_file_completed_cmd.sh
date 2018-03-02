@@ -2,7 +2,11 @@
 # file_completed_cmd interface
 HASH="$1"
 SIZE="$2"
-FILENAME="$3" #IMPORTANT: it's the name of the downloaded file.
+FILENAME_ONLY="$3"
+FILENAME="/media/MAXTOR/mldonkey/incoming/files/" #TODO: refer only to default mldonkey download folder, remove any reference to my RPI
+FILENAME+="$3" #IMPORTANT: it's the name of the downloaded file but without full path. That's why i'm adding the path here
+
+
 
 # Remove xtension from file, in case SUB has to be downloaded.
 FILENAME_NO_EXT=`echo "${FILENAME%.*}"`
@@ -14,7 +18,7 @@ FILENAME_SUB_ITA_CORRECT="${FILENAME_NO_EXT}.srt"
 
 # First trial, call googliser
 # /home/pi/googliser/googliser.sh -n 1 -p "$FILENAME_NO_EXT" -g -q
-python /home/pi/OpenSubtitlesDownload/OpenSubtitlesDownload.py -l ita "$FILENAME"
+python /home/pi/OpenSubtitlesDownload/OpenSubtitlesDownload.py -l ita "$FILENAME" #TODO bundle python script and load it from current folder, remove any reference to my RPI
 
 
 
@@ -25,7 +29,7 @@ then
         #echo "$FILENAME_SUB_ITA"
 fi
 
-echo "$FILENAME" | /home/pi/telegram-pipe.sh
+echo "$FILENAME_ONLY" | /home/pi/telegram-pipe.sh #TODO bundle telegram script and load it from current folder, remove any reference to my RPI
 
 if [ -f "$FILENAME_SUB_ITA_CORRECT" ]
 then
