@@ -1,226 +1,99 @@
-# 🎬 MLDonkey Telegram Notifier
+# 📢 mldonkey-telegram-notifier
 
-> 🇬🇧 [Read in English](README.en.md)
-
-[![License: GPL-3.0](https://img.shields.io/badge/License-GPL%203.0-blue.svg)](LICENSE)
-
-Notifiche Telegram automatiche per i download completati da **MLDonkey**, con ricerca IMDB, download sottotitoli italiani, poster e metadata per media center.
-
----
+Notifiche Telegram automatiche quando MLDonkey completa un download.
 
 ## ✨ Funzionalità
 
-| Funzionalità | Descrizione |
-|---|---|
-| 📬 **Notifiche Telegram** | Messaggio automatico ad ogni download completato |
-| 🎥 **Ricerca IMDB** | Link IMDB automatico per file video |
-| 📺 **Rilevamento Film/Serie** | Distingue automaticamente film da serie TV |
-| 💬 **Sottotitoli italiani** | Download automatico via Subliminal, opensubtitles-cli o API diretta |
-| 🖼️ **Poster HD** | Download automatico poster dal TMDb |
-| 📋 **Metadata NFO** | File NFO compatibili con Kodi, Plex, Jellyfin, Emby |
-| 📊 **Dimensioni leggibili** | Conversione automatica bytes → KB/MB/GB |
-| 📝 **Logging** | Log completo di tutte le operazioni |
+- 🎉 **Notifica Telegram** con nome file, dimensione, durata download, rete
+- 🎬 **Riconoscimento automatico** film e serie TV (guessit)
+- 🔍 **Ricerca IMDB** automatica con link diretto
+- 🖼️ **Poster** del film/serie inviato come foto Telegram
+- 🎯 **TMDb** (opzionale) per metadata in italiano, rating e poster HD
+- 🗒️ **Sottotitoli ITA** scaricati automaticamente (subliminal)
+- 📝 **Log** dettagliato su file
+- 🔄 **Fallback** automatico: se HTML Telegram fallisce, riprova in plain text
 
----
-
-## 📂 Struttura del Repository
-
-```
-├── mldonkey-telegram-notify.sh   # 🔧 Script principale (versione attuale)
-├── SUBLIMINAL_SETUP.md           # 📖 Guida installazione Subliminal
-├── TMDB_GUIDE.md                 # 📖 Guida configurazione TMDb
-├── _Maurizio/                    # 📦 Script originali (legacy)
-│   ├── my_file_completed_cmd.sh  #     Hook originale per MLDonkey
-│   ├── telegram-pipe.sh          #     Utility pipe → Telegram
-│   ├── README.md                 #     Documentazione originale
-│   └── LICENSE                   #     Licenza GPL-3.0
-└── README.md                     # ← Questo file
-```
-
----
-
-## ⚡ Quick Start
-
-### 1. Prerequisiti
+## 📦 Dipendenze
 
 ```bash
-sudo apt-get update
-sudo apt-get install -y curl jq bc python3 python3-pip
-pip3 install subliminal   # Consigliato per sottotitoli
+# Già presenti su Raspberry Pi OS
+apt install python3 curl jq
+
+# Python packages
+pip3 install guessit subliminal babelfish
 ```
 
-### 2. Crea un Bot Telegram
+## 🚀 Installazione
 
-1. Apri Telegram → cerca **@BotFather** → invia `/newbot`
-2. Salva il **Bot Token** (formato: `123456789:ABCdefGHI...`)
-3. Ottieni il tuo **Chat ID** da **@userinfobot**
+1. **Copia i file** nella stessa directory:
+   ```bash
+   cp mldonkey-notify.sh /path/to/scripts/
+   cp mldonkey-notify.conf.example /path/to/scripts/mldonkey-notify.conf
+   chmod +x /path/to/scripts/mldonkey-notify.sh
+   ```
 
-### 3. Configura lo Script
+2. **Configura** `mldonkey-notify.conf`:
+   ```bash
+   TELEGRAM_BOT_TOKEN="il_tuo_bot_token"
+   TELEGRAM_CHAT_ID="il_tuo_chat_id"
+   MLDONKEY_INCOMING="/media/hdd/mldonkey/incoming/files"
+   ```
 
-Modifica le variabili in testa a `mldonkey-telegram-notify.sh`:
+3. **Configura MLDonkey** — nel telnet/web UI di mldonkey:
+   ```
+   set file_completed_cmd "/path/to/scripts/mldonkey-notify.sh"
+   ```
+   Oppure in `downloads.ini`:
+   ```
+   file_completed_cmd = "/path/to/scripts/mldonkey-notify.sh"
+   ```
 
-```bash
-TELEGRAM_BOT_TOKEN="il-tuo-token"
-TELEGRAM_CHAT_ID="il-tuo-chat-id"
+## 📱 Esempio notifica
 
-# Opzionali (ma consigliati)
-TMDB_API_KEY="la-tua-api-key"          # Per poster e metadata
-OPENSUBTITLES_USERNAME="username"       # Per sottotitoli migliorati
-OPENSUBTITLES_PASSWORD="password"
-```
+**Film con poster:**
+> 🎉 **Download completato!**
+>
+> 📁 `Dune.Part.Two.2024.2160p.WEB-DL.DDP5.1.x265.mkv`
+> 📦 1.44 GB ⏱ 2h 0m 🌐 ed2k
+>
+> 🎬 **Dune** (2024) — 2160p
+> 🔗 IMDB
+> 🗒 Sottotitoli ITA: ✅ scaricati
 
-### 4. Configura MLDonkey
+**Serie TV:**
+> 📺 **Breaking Bad** S1E1 — 1080p
 
-Imposta `file_completed_cmd` in uno dei seguenti modi:
+**File generico:**
+> 📁 `ubuntu-24.04-desktop-amd64.iso`
+> 📦 4.38 GB ⏱ 15m 🌐 ed2k
 
-**Via `downloads.ini`:**
-```ini
-file_completed_cmd = "/percorso/mldonkey-telegram-notify.sh \"%f\" \"%s\" \"%h\" \"%p\""
-```
+## ⚙️ Opzioni config
 
-**Via interfaccia web** (http://localhost:4080):
-Settings → Options → `file_completed_cmd`
+| Parametro | Default | Descrizione |
+|-----------|---------|-------------|
+| `TELEGRAM_BOT_TOKEN` | — | Token del bot Telegram (obbligatorio) |
+| `TELEGRAM_CHAT_ID` | — | Chat ID destinazione (obbligatorio) |
+| `MLDONKEY_INCOMING` | — | Path directory incoming mldonkey |
+| `TMDB_API_KEY` | vuoto | API key TMDb (opzionale, gratis) |
+| `SUBTITLE_LANG` | `it` | Lingua sottotitoli |
+| `SUBTITLE_ENABLED` | `true` | Abilita download sottotitoli |
+| `MEDIA_LOOKUP` | `true` | Cerca info IMDB/TMDb per video |
+| `SEND_POSTER` | `true` | Invia poster come foto |
+| `LOG_FILE` | — | Path file di log |
 
-**Via telnet:**
-```bash
-telnet localhost 4000
-set file_completed_cmd "/percorso/mldonkey-telegram-notify.sh \"%f\" \"%s\" \"%h\" \"%p\""
-save
-```
-
-### 5. Test
-
-```bash
-chmod +x mldonkey-telegram-notify.sh
-./mldonkey-telegram-notify.sh "The.Matrix.1999.1080p.BluRay.mkv" "1073741824" "ABC123" "/downloads/The.Matrix.1999.1080p.BluRay.mkv"
-```
-
----
-
-## 📱 Esempio di Notifica
-
-```
-🎉 Download completato!
-
-📁 File: The.Matrix.1999.1080p.BluRay.x264.mkv
-📊 Dimensione: 8.50 GB
-🔑 Hash: ABC123DEF456
-📂 Percorso: /home/downloads/The.Matrix.1999.1080p.BluRay.x264.mkv
-🕐 Data: 30/01/2026 15:30:45
-
-🎬 Informazioni Video:
-🎥 Tipo: Film
-🔗 Vedi su IMDB
-🖼️ Poster scaricato
-📋 Metadata salvati (NFO)
-💬 ✅ Sottotitoli italiani scaricati
-```
-
-### File generati per ogni video:
+## 🏗️ Architettura
 
 ```
-/downloads/
-├── The.Matrix.1999.1080p.BluRay.x264.mkv          # Video
-├── The.Matrix.1999.1080p.BluRay.x264.srt           # Sottotitoli IT
-├── The.Matrix.1999.1080p.BluRay.x264-poster.jpg    # Poster HD
-└── The.Matrix.1999.1080p.BluRay.x264.nfo           # Metadata XML
+mldonkey (file_completed_cmd)
+  └→ mldonkey-notify.sh
+       ├── mldonkey-notify.conf (config esterna)
+       ├── guessit (parsing nome file)
+       ├── IMDB Suggest API (lookup gratuito)
+       ├── TMDb API (opzionale, poster HD + metadata IT)
+       ├── subliminal (sottotitoli)
+       └── Telegram Bot API (notifica + foto)
 ```
-
----
-
-## 🔧 Funzionamento Dettagliato
-
-### Rilevamento Video
-Estensioni supportate: `.avi`, `.mkv`, `.mp4`, `.mov`, `.wmv`, `.flv`, `.m4v`, `.mpg`, `.mpeg`, `.divx`, `.xvid`, `.webm`, `.ogv`, `.3gp`, `.m2ts`, `.ts`
-
-### Rilevamento Film vs Serie TV
-- **Serie TV**: pattern come `S01E01`, `1x01`, `Season`, `Episode`
-- **Film**: tutto il resto
-
-### Download Sottotitoli (3 metodi in cascata)
-1. **Subliminal** (consigliato) — cerca su più provider automaticamente
-2. **opensubtitles-cli** — alternativa via npm
-3. **API diretta OpenSubtitles** — fallback con hash del file
-
-### Poster e Metadata (TMDb)
-- Cerca film/serie su TMDb con titolo estratto dal filename
-- Scarica poster in risoluzione originale (~2000×3000px)
-- Genera file NFO in formato XML compatibile con Kodi/Plex/Jellyfin
-
----
-
-## 📖 Guide Aggiuntive
-
-| Guida | Descrizione |
-|---|---|
-| [SUBLIMINAL_SETUP.md](SUBLIMINAL_SETUP.md) | Installazione e configurazione Subliminal per sottotitoli |
-| [TMDB_GUIDE.md](TMDB_GUIDE.md) | Configurazione TMDb per poster e metadata |
-
----
-
-## 📦 Script Legacy (`_Maurizio/`)
-
-La cartella `_Maurizio/` contiene gli **script originali** che hanno ispirato questo progetto:
-
-- **`my_file_completed_cmd.sh`** — Hook per `file_completed_cmd` di MLDonkey, con download sottotitoli via [OpenSubtitlesDownload](https://github.com/emericg/OpenSubtitlesDownload)
-- **`telegram-pipe.sh`** — Utility per inviare testo a Telegram via pipe (`echo "messaggio" | ./telegram-pipe.sh`)
-
-Questi script sono mantenuti per riferimento storico. Per nuove installazioni, usa `mldonkey-telegram-notify.sh`.
-
----
-
-## 🔍 Parametri dello Script
-
-Lo script riceve 4 parametri da MLDonkey:
-
-| Parametro | Descrizione |
-|---|---|
-| `$1` | Nome del file |
-| `$2` | Dimensione in bytes |
-| `$3` | Hash MD4/ED2K |
-| `$4` | Percorso completo del file |
-
----
-
-## 🐛 Risoluzione Problemi
-
-<details>
-<summary><b>La notifica non arriva</b></summary>
-
-1. Verifica token e chat_id
-2. Controlla che `curl` sia installato
-3. Testa il bot: `curl https://api.telegram.org/bot<TOKEN>/getMe`
-4. Controlla il log: `tail -f /var/log/mldonkey-telegram.log`
-</details>
-
-<details>
-<summary><b>Sottotitoli non trovati</b></summary>
-
-1. Installa Subliminal: `pip3 install subliminal`
-2. Verifica che il nome file sia in formato standard (`Film.Anno.Qualità.mkv`)
-3. Registrati su OpenSubtitles per limiti più alti
-</details>
-
-<details>
-<summary><b>Poster/metadata non scaricati</b></summary>
-
-1. Verifica la TMDb API Key
-2. Testa: `curl "https://api.themoviedb.org/3/search/movie?api_key=TUA_KEY&query=matrix"`
-3. Rate limit: max 40 richieste ogni 10 secondi
-</details>
-
----
 
 ## 📄 Licenza
 
-Questo progetto è distribuito sotto licenza [GPL-3.0](LICENSE).
-
----
-
-## 👤 Autore
-
-**Maurizio Tallarico** — [@mauriziotallarico](https://github.com/mauriziotallarico)
-
----
-
-*Notifiche intelligenti per i tuoi download 🍿*
+MIT
