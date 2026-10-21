@@ -323,18 +323,15 @@ download_subtitles() {
     out=$(python3 -c "
 import sys
 try:
-    from subliminal import download_best_subtitles, scan_videos, save_subtitles, region
+    from subliminal import download_best_subtitles, scan_video, save_subtitles, region
     from babelfish import Language
     region.configure('dogpile.cache.memory')
-    videos = scan_videos(sys.argv[1])
-    if not videos:
-        print('NOT_FOUND'); sys.exit(0)
-    subs = download_best_subtitles(videos, {Language(sys.argv[2])},
+    video = scan_video(sys.argv[1])
+    subs = download_best_subtitles({video}, {Language(sys.argv[2])},
         providers=['opensubtitlescom', 'podnapisi', 'addic7ed'])
-    found = any(s for s in subs.values() if s)
+    found = subs.get(video, [])
     if found:
-        for v, s in subs.items():
-            if s: save_subtitles(v, s)
+        save_subtitles(video, found)
         print('FOUND')
     else:
         print('NOT_FOUND')
